@@ -28,5 +28,5 @@ Annotations are stored in a matlab structure RELEASE having following fields
 
 Example
 
-![Alt text](annotation_example.jpg?raw=true "An example of data loaded")
+![Alt text](https://github.com/carodak/Human-Movement/blob/master/annotation_example.png "An example of data loaded")
 
