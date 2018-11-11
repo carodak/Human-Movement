@@ -5,7 +5,7 @@ CURRENT STEP TO COMPLETE:
 
 ![Alt text](https://github.com/carodak/Human-Movement/blob/master/annotation.png "Structure of the data")
 
-Example
+Example obtained by running PlayWithData.py
 
 ![Alt text](https://github.com/carodak/Human-Movement/blob/master/annotation_example.png "An example of data loaded")
 
