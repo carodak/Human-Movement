@@ -1,12 +1,10 @@
 CURRENT STEP TO COMPLETE:
 
-1) Load the data
-2) Understand it
+1) Load the MPII database in MatLab, understand it
+2) Transform it to use it with Python
 
+Original matlab data structure:
 ![Alt text](https://github.com/carodak/Human-Movement/blob/master/annotation.png "Structure of the data")
 
-Example obtained by running PlayWithData.py
+Our python structure:
 
-![Alt text](https://github.com/carodak/Human-Movement/blob/master/annotation_example.png "An example of data loaded")
-
-NEXT STEPS:
