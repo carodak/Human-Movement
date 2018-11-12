@@ -1,10 +1,14 @@
 # Load the pickle file.
 import pickle
 MPII_dataset = pickle.load( open( "Data/MPII_dataset.p", "rb" ) )
-#joint information stack in a vector form.  the first 16 values are the x value of each joints and the next 16 is the y value.  When both x and y are 0 that means that the information wasn't available
+
+#MPII_dataset: list that contains all examples (=annotation of all pictures)
+
+#Each example is a 2x16 matrix where the first row is the x position of the 16 joins and the second row is the y position of the 16 joins
+#When x and y = 0, it means that the join is not visible
+
+#Then we can match examples with their index in the others pickle files to get the labels for example
+
 
 print(MPII_dataset)
 
-label_categories = pickle.load( open( "Data/MPII_dataset_label_categories.p", "rb" ) )
-
-#print(label_categories)
