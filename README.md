@@ -1,7 +1,10 @@
-CURRENT STEP TO COMPLETE:
+CURRENT STEP:
+Start classyfying
 
-1) Load the MPII database in MatLab, understand it
-2) Transform it to use it with Python
+PAST STEP:
+
+1) Load the MPII database in MatLab, understand it (done)
+2) Transform it to use it with Python (done)
 
 Our python structure:
 
