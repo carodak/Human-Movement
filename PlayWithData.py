@@ -7,4 +7,4 @@ print(MPII_dataset)
 
 label_categories = pickle.load( open( "Data/MPII_dataset_label_categories.p", "rb" ) )
 
-print(label_categories)
+#print(label_categories)
