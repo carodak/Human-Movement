@@ -1,7 +1,7 @@
 CURRENT STEP:
 Start classyfying MPII dataset
 
-Our python structure:
+I)Our python structure:
 
 The features have been separated into several pickles. 
 
