@@ -1,5 +1,9 @@
 CURRENT STEP:
+<<<<<<< HEAD
 Start classyfying MPII dataset
+=======
+Start classyfying
+>>>>>>> 124f7bfe757d33d3a012709eae435b8bdf09e6a6
 
 PAST STEP:
 
@@ -21,6 +25,7 @@ Each example is a 2x16 matrix where the first row is the x position of the 16 jo
 
 ![Alt text](https://github.com/carodak/Human-Movement/blob/master/annotation_example.png "Our structure")
 
+<<<<<<< HEAD
 
 2) MPII_dataset_activities.p
 
@@ -78,4 +83,7 @@ http://human-pose.mpi-inf.mpg.de/js_viewer/thumbs/018340451_thumb.jpg?fbclid=IwA
 
 
 
+=======
+How to use it: Match examples with their index in the others pickle files to get the labels...
+>>>>>>> 124f7bfe757d33d3a012709eae435b8bdf09e6a6
 
