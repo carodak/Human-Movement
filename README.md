@@ -1,14 +1,5 @@
 CURRENT STEP:
-<<<<<<< HEAD
 Start classyfying MPII dataset
-=======
-Start classyfying
->>>>>>> 124f7bfe757d33d3a012709eae435b8bdf09e6a6
-
-PAST STEP:
-
-1) Load the MPII database in MatLab, understand it (done)
-2) Transform it to use it with Python (done)
 
 Our python structure:
 
@@ -23,9 +14,7 @@ MPII_dataset = pickle.load( open( "Data/MPII_dataset.p", "rb" ) )
 - MPII_dataset is a list that contains the positions of the joints of each example
 Each example is a 2x16 matrix where the first row is the x position of the 16 joins and the second row is the y position of the 16 joins. When x and y = 0, it means that the join is not visible
 
-![Alt text](https://github.com/carodak/Human-Movement/blob/master/annotation_example.png "Our structure")
-
-<<<<<<< HEAD
+for instance: MPII_dataset[0] = x,y coordinates of its 16 joins  =  [[ 115  107  -85  -60  120  130  -72  -89  -84  -36   64  -50 -101  -79 -25   56][ 280  105   97   72   97  278   85 -107 -118 -235   74   56 -101 -115 31   58]]
 
 2) MPII_dataset_activities.p
 
