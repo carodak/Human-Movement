@@ -49,7 +49,6 @@ MPII_dataset_label_categories is a vector that gives the category of each image
 
 MPII_dataset_label_categories is a vector that gives the category of each image
 
->>>>>>> 42758743097138f96f5a180f21c542d6994225d2
 ***Example:***
 MPII_dataset_label_categories[0]='sports'
 
@@ -66,7 +65,6 @@ MPII_dataset_label is a vector that gives the label of the activity/activities
 
 MPII_dataset_label is a vector that gives the label of the activity/activities
 
->>>>>>> 42758743097138f96f5a180f21c542d6994225d2
 ***Example:***
 MPII_dataset_label[17]=622
 
@@ -98,9 +96,3 @@ Label of the activity/activities:  622
 
 Notice that you got the name of the picture so you can see it via mpi website: 
 http://human-pose.mpi-inf.mpg.de/js_viewer/thumbs/018340451_thumb.jpg?fbclid=IwAR3n_eimmS4rKQVmhubcjivP9O3j1OfW9FwWq9T1fvGwR6dwGftaKK1zuKk
-
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 42758743097138f96f5a180f21c542d6994225d2
