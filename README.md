@@ -42,23 +42,11 @@ MPII_dataset_images_names[0]='015601864.jpg'
 
 MPII_dataset_label_categories is a vector that gives the category of each image
 
-=======
-
-*MPII_dataset_label_categories = pickle.load( open( "Data/MPII/MPII_dataset_label_categories.p", "rb" ) )*
-
-MPII_dataset_label_categories is a vector that gives the category of each image
-
 ***Example:***
 MPII_dataset_label_categories[0]='sports'
 
 #### **5)  MPII_dataset_label.p**
 <<<<<<< HEAD
-
-*MPII_dataset_label = pickle.load( open( "Data/MPII/MPII_dataset_label.p", "rb" ) )*
-
-MPII_dataset_label is a vector that gives the label of the activity/activities
-
-=======
 
 *MPII_dataset_label = pickle.load( open( "Data/MPII/MPII_dataset_label.p", "rb" ) )*
 
