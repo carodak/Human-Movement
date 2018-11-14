@@ -66,13 +66,16 @@ Let's take picture number 17.
 
 it gives:
 
-The name of the picture 17 is 018340451.jpg 
+The name of the picture 17 is 018340451.jpg
+
 Coordinates of its joins  :  [[ 115  107  -85  -60  120  130  -72  -89  -84  -36   64  -50 -101  -79
--25   56]
-[ 280  105   97   72   97  278   85 -107 -118 -235   74   56 -101 -115
+-25   56][ 280  105   97   72   97  278   85 -107 -118 -235   74   56 -101 -115
 31   58]]
+
 Activity/Activities:  sitting, talking in person, on the phone, computer, or text messaging, light effort
+
 Category:  miscellaneous
+
 Label of the activity/activities:  622
 
 **Show the picture:**
