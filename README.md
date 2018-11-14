@@ -37,7 +37,6 @@ MPII_dataset_images_names is a vector that gives the name of each image
 MPII_dataset_images_names[0]='015601864.jpg'
 
 #### **4) MPII_dataset_label_categories.p**
-<<<<<<< HEAD
 
 *MPII_dataset_label_categories = pickle.load( open( "Data/MPII/MPII_dataset_label_categories.p", "rb" ) )*
 
