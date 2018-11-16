@@ -22,7 +22,7 @@ n = len(MPII_dataset)
 #We need the x_data under the form [[32joins of image1], [32joins of image2], []...]
 data = np.reshape(MPII_dataset, (n, 32))
 
-#We just take a subset of the data to train -> 100 first images
+#We just take a subset of the data to train -> 1000 first images
 x_train = np.delete(data, slice(1001, n), 0)
 y_train = np.delete(MPII_dataset_label, slice(1001,n),0)
 
