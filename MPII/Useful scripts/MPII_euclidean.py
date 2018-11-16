@@ -2,9 +2,13 @@
 import pickle
 import numpy as np
 from scipy.spatial import distance
+from os.path import dirname, abspath
+
+current_dir = dirname(dirname(abspath(__file__)))
+parent_dir = dirname(current_dir)
 
 #Load the data
-MPII_dataset = pickle.load( open( "../Data/MPII/MPII_dataset.p", "rb" ) )
+MPII_dataset = pickle.load( open( parent_dir+"/MPII/Data/MPII_dataset.p", "rb" ) )
 
 #Get the number of images
 n = len(MPII_dataset)
@@ -31,21 +35,26 @@ for i in range(n):
         x_coordP1 = MPII_dataset[i][0][j]
         y_coordP1 = MPII_dataset[i][1][j]
         
+        coordP1 = np.array([x_coordP1,y_coordP1])
+        
         distP1P2 = np.array([])
         
         for h in range(n1):
             x_coordP2 = MPII_dataset[i][0][h]
             y_coordP2 = MPII_dataset[i][1][h]
-            distP1_P2 = distance.euclidean([x_coordP1,y_coordP1], [x_coordP2,y_coordP2])
+            
+            coordP2 = np.array([x_coordP2,y_coordP2])
+            
+            distP1_P2 = np.linalg.norm(coordP1-coordP2)
             distP1P2 =  np.append(distP1P2,distP1_P2)
         
         dist_i = np.vstack((dist_i, distP1P2))
-#print(dist_i)
+    #print(dist_i)
     dist[i] = dist_i
     dist_i = np.array([]).reshape(0,16)
 
 print(dist)
-pickle.dump(dist, open( "Data/MPII/MPII_dataset_euclidean_distance.p", "wb" ) )
+pickle.dump(dist, open( parent_dir+"/MPII/Data/MPII_dataset_euclidean_distance2.p", "wb" ) )
 
 
 
