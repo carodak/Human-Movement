@@ -5,6 +5,9 @@ from sklearn.model_selection import cross_val_score
 from sklearn.datasets import load_iris
 from sklearn.ensemble import AdaBoostClassifier
 from os.path import dirname, abspath
+from sklearn.model_selection import train_test_split
+from sklearn import preprocessing, svm
+from sklearn.tree import DecisionTreeClassifier
 
 current_dir = dirname(dirname(abspath(__file__)))
 parent_dir = dirname(current_dir)
@@ -21,34 +24,18 @@ MPII_dataset_label = pickle.load( open( parent_dir+"/MPII/Data/MPII_dataset_labe
 
 #Get the number of images
 n = len(MPII_dataset)
-n_ = int(n/2)
 
 #We need the x_data under the form [[32joins of image1], [32joins of image2], []...]
 X = np.reshape(MPII_dataset, (n, 32))
 
-#We just take a subset of the data to train -> 1000 first images
-x_train = X[:n_]
-y_train = MPII_dataset_label_categories[:n_]
+X_train, X_test, y_train, y_test = train_test_split(X, MPII_dataset_label_categories, test_size=0.33, random_state=42)
 
-x_valid = X[n_:]
-y_train = MPII_dataset_label_categories[n_:]
-
-#Let's take 10 weak learners
-clf = AdaBoostClassifier(n_estimators=100)
-
-#cv : Determines the cross-validation splitting strategy
-scores = cross_val_score(clf, x_train, y_train, cv=5)
-
-mean = scores.mean()
-print("Scores train: ",scores)
-print("Mean: ",mean)
-
-scores2 = cross_val_score(clf, x_valid, y_train, cv=5)
-
-mean2 = scores2.mean()
-print("Scores test: ",scores2)
-print("Mean: ",mean2)
-
+#scaler = preprocessing.StandardScaler().fit(X_train)
+#X_train_transformed = scaler.transform(X_train)
+clf = AdaBoostClassifier(n_estimators=300,learning_rate=0.0001)
+#X_test_transformed = scaler.transform(X_test)
+clf.fit(X_train,y_train)
+print(clf.score(X_test, y_test))
 
 
 
