@@ -21,7 +21,7 @@ labels = pickle.load( open( parent_parent_dir+"/Stanford/Data/stanford_labels.p"
 
 #Change the list to an array
 X = np.array([x.tolist() for x in dataset])
-#print(X)
+#print(X)#
 
 n = X.shape[0]
 
