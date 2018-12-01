@@ -1,33 +1,49 @@
 import numpy as np
 import random
+import os.path
 
 
-def load_utd_mhad():
-    UTD_dataset = np.loadtxt("/Data/UTD_MHAD_Labeled_Descriptors.csv", delimiter=",", skiprows=0)
+def load_utdmhad_cov_matrix_examples(
+    training_set_size,
+    training_validation_set_size,
+    testing_set_size
+):
+    """
+    Load the covariance matrix vector method pre-processed UTD-MHAD dataset
 
-    # Commenter pour avoir des resultats non-deterministes
-    random.seed(5)
+    :param training_set_size: The % of the dataset we want as the training set [0,1]
+    :param training_validation_set_size: The % of the dataset we want as the training validation set [0,1]
+    :param testing_set_size: The % of the dataset we want as the testing set [0,1]
+    :return: training_set, training_set_labels,
+             training_validation_set, training_validation_labels,
+             testing_set, testing_set_labels
+    """
+    assert(0 <= training_set_size <= 1)
+    assert(0 <= training_validation_set_size <= 1)
+    assert(0 <= testing_set_size <= 1)
+    assert(training_set_size + training_validation_set_size + testing_set_size) == 1
 
-    ##########################  Make validation set with 1/3 of training set ########################
+    data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Data", "UTD_MHAD_Labeled_Descriptors.csv")
+    raw_dataset = np.loadtxt(data_path, delimiter=",", skiprows=0)
+    raw_dataset = raw_dataset.T
+    num_examples = raw_dataset.shape[0]
 
-    n_train = int(UTD_dataset.shape[1] * 0.66)
+    random.shuffle(raw_dataset)
 
-    # Determiner au hasard des indices pour les exemples d'entrainement et de test
-    inds = list(range(UTD_dataset.shape[1]))
+    num_train = int(num_examples * training_set_size)
+    num_valid = int(num_examples * training_validation_set_size)
+    num_test = int(num_examples * testing_set_size)
 
-    random.shuffle(inds)
-    knn_train_for_val_inds = inds[:n_train]
-    knn_valid_inds = inds[n_train:]
+    bounds = [num_train-1, num_train+num_valid-1, num_train+num_valid+num_test]
 
-    TRAIN_labled_set_for_valid = UTD_dataset[:, knn_train_for_val_inds].T
-    test_labled_set_for_valid = UTD_dataset[:, knn_valid_inds].T
+    training_set = raw_dataset[:bounds[0], 1:]
+    training_validation_set = raw_dataset[bounds[0]:bounds[1], 1:]
+    testing_set = raw_dataset[bounds[1]:bounds[2], 1:]
 
-    train_labels = TRAIN_labled_set_for_valid[:, 0]
+    training_set_labels = raw_dataset[:bounds[0], 0]
+    training_validation_labels = raw_dataset[bounds[0]:bounds[1], 0]
+    testing_set_labels = raw_dataset[bounds[1]:bounds[2], 0]
 
-    train_descriptors = TRAIN_labled_set_for_valid[:, 1:]
-
-    test_labels = test_labled_set_for_valid[:, 0]
-
-    test_descriptors = test_labled_set_for_valid[:, 1:]
-
-    test_predictions = np.zeros(test_labled_set_for_valid.shape[0])
+    return training_set, training_set_labels,\
+           training_validation_set, training_validation_labels,\
+           testing_set, testing_set_labels

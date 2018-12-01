@@ -1,41 +1,26 @@
 import numpy as np  # linear algebra
 import matplotlib.pyplot as plt
-import os
 from sklearn.ensemble import RandomForestClassifier
-import csv
-from os.path import dirname, abspath
 
-import UTDMHAD.utils
+import UTDMHAD.utils as utils
 
 
-# A Random Forest classifier for the UTD-MHAD dataset
+# A Random Forest classifier for the UTD-MHAD dataset using the covariance matrix vector pre-processed data
 def main():
+    training_set_size = 0.8
+    training_validation_set_size = 0
+    testing_set_size = 0.2
 
-
-    # Load images with numpy (test set)
-    images_test = np.load(parent_dir + '/data/test_images.npy', encoding='latin1')
-
-    # Below we'll just convert data to get X: [[vect1], [vect2], ..] and y = [labxˆ1,labxˆ2,...,labxˆn]
-
-    X_ = images_train[:, -1]
-
-    n = len(X_)
-    n2 = len(X_[0])
-
-    y = [x[1] for x in train_labels]
-
-    X = np.zeros([n, n2])
-
-    for i in range(n):
-        X[i] = X_[i].tolist()
-
-    # print(X)
+    train_set_X, train_set_y, valid_set_X, valid_set_y, test_set_X, test_set_y = utils.load_utdmhad_cov_matrix_examples(
+        training_set_size,
+        training_validation_set_size,
+        testing_set_size
+    )
 
     # Try different max_depth (tree max depth) to improve results
-    clf = RandomForestClassifier(n_estimators=100, max_depth=10,
-                                 random_state=0)
-    clf.fit(X, y)
-    acc = clf.score(X, y)
+    clf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=0)
+    clf.fit(train_set_X, train_set_y)
+    acc = clf.score(train_set_X, train_set_y)
     print("Accuracy on the training set: %s \n" % acc)
 
     print("clf.feature_importances: %s \n " % clf.feature_importances_)
