@@ -46,7 +46,7 @@ UTD_dataset = np.loadtxt(open("UTD_MHAD_Labeled_Descriptors.csv", "rb"), delimit
 
 
 # Commenter pour avoir des resultats non-deterministes
-random.seed(5)
+random.seed(200)
 
 ##########################  Make validation set with 1/3 of training set ########################
 
@@ -134,62 +134,86 @@ print(error_rate)
 #                                                                                                   #
 #                                                                                                   #
 #####################################################################################################
+#
+# # Optimize HyperParam
+#
+# lin_spa = np.arange(0.1, 0.3, 0.02)
+#
+# #Define parameters
+# gamma = 1
+# c = 1
+#
+#
+#
+# error = np.zeros((len(lin_spa), len(lin_spa)))
+#
+#
+# for gamma in lin_spa:
+#
+#     j = 0
+#
+#     for c in lin_spa:
+#
+#         #Initialize model
+#         rbf_svc = svm.SVC(C=c*150, kernel='rbf', gamma = gamma/25)
+#
+#         rbf_svc.fit(train_descriptors, train_labels)
+#
+#         print("\n \n \n")
+#         print("SVM confusion matrix:")
+#
+#         test_predictions = rbf_svc.predict(test_descriptors)
+#
+#         error[i][j] = (1.0 - np.equal(test_predictions, test_labels)).mean() * 100.0
+#
+#         j += 1
+#     i += 1
+#
+# test = np.argmin(error)
+#
+#
+#
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection='3d')
+#
+#
+# X, Y = np.meshgrid(lin_spa/25, lin_spa*150)
+#
+#
+# ax.plot_surface(X, Y, error, rstride=1, cstride=1, cmap=plt.cm.coolwarm,
+#     linewidth=0, antialiased=False)
+#
+# ax.set_xlabel('Gamma')
+# ax.set_ylabel('C')
+# ax.set_zlabel('Taux erreur')
+#
+#
+# plt.savefig('SVM_hyperparam_optimization.png', dpi=100)
+# plt.show()
+#
+# # Initialize model
+
+
+# rbf_svc = svm.SVC(C=20, kernel='rbf', gamma=0.011)
+
+rbf_svc = svm.SVC(C=42, kernel='rbf', gamma=0.0024)
+rbf_svc.fit(train_descriptors, train_labels)
+
+conf_mat_svm = conf_matrix(test_labels, test_predictions)
+
+
+print("\n \n \n")
+print("SVM confusion matrix:")
+
+print(conf_mat_svm)
 
 
 
-lin_spa = np.arange(0.1, 0.3, 0.02)
+test_predictions = rbf_svc.predict(test_descriptors)
 
-#Define parameters
-gamma = 1
-c = 1
+error = (1.0 - np.equal(test_predictions, test_labels)).mean() * 100.0
 
 
-
-error = np.zeros((len(lin_spa), len(lin_spa)))
-
-
-for gamma in lin_spa:
-
-    j = 0
-
-    for c in lin_spa:
-
-        #Initialize model
-        rbf_svc = svm.SVC(C=c*150, kernel='rbf', gamma = gamma/25)
-
-        rbf_svc.fit(train_descriptors, train_labels)
-
-        print("\n \n \n")
-        print("SVM confusion matrix:")
-
-        test_predictions = rbf_svc.predict(test_descriptors)
-
-        error[i][j] = (1.0 - np.equal(test_predictions, test_labels)).mean() * 100.0
-
-        j += 1
-    i += 1
-
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-
-X, Y = np.meshgrid(lin_spa/25, lin_spa*150)
-
-
-ax.plot_surface(X, Y, error, rstride=1, cstride=1, cmap=plt.cm.coolwarm,
-    linewidth=0, antialiased=False)
-
-ax.set_xlabel('Gamma')
-ax.set_ylabel('C')
-ax.set_zlabel('Taux erreur')
-
-
-plt.savefig('SVM_hyperparam_optimization.png', dpi=100)
-plt.show()
-
-
-
-
-
+print(error)
 
 bob = 0
