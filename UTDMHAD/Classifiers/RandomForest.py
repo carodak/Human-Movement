@@ -1,6 +1,7 @@
 import numpy as np  # linear algebra
 import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
+import os
 
 import UTDMHAD.utils as utils
 
@@ -18,27 +19,21 @@ def main():
     )
 
     # Try different max_depth (tree max depth) to improve results
-    clf = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=0)
-    clf.fit(train_set_X, train_set_y)
-    acc = clf.score(train_set_X, train_set_y)
+    model = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=0)
+    model.fit(train_set_X, train_set_y)
+    acc = model.score(test_set_X, test_set_y)
     print("Accuracy on the training set: %s \n" % acc)
 
-    print("clf.feature_importances: %s \n " % clf.feature_importances_)
+    return
 
-    Xtest_ = images_train[:, -1]
-    nt = len(Xtest_)
-    nt2 = len(Xtest_[0])
-    Xtest = np.zeros([nt, nt2])
-    for i in range(nt):
-        Xtest[i] = Xtest_[i].tolist()
+    print("clf.feature_importances: %s \n " % model.feature_importances_)
 
-    results = clf.predict(Xtest)
+    results = model.predict(test_set_X)
 
-    print("Results (predictions on the test set): %s \n" % results)
+    results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Results", "RandomForest_predictions.csv")
+    np.savetxt(results_path, results, delimiter=',', fmt='%s')
 
-    np.savetxt(parent_dir + '/results/test_random_forest.csv', [p for p in results], delimiter=' ', fmt='%s')
-
-    print("Predictions as been saved as a csv file")
+    print("Predictions have been saved as a csv file")
 
 
 if __name__ == '__main__':

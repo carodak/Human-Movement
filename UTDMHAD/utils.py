@@ -21,7 +21,7 @@ def load_utdmhad_cov_matrix_examples(
     assert(0 <= training_set_size <= 1)
     assert(0 <= training_validation_set_size <= 1)
     assert(0 <= testing_set_size <= 1)
-    assert(training_set_size + training_validation_set_size + testing_set_size) == 1
+    assert(0 <= training_set_size + training_validation_set_size + testing_set_size <= 1)
 
     data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Data", "UTD_MHAD_Labeled_Descriptors.csv")
     raw_dataset = np.loadtxt(data_path, delimiter=",", skiprows=0)
