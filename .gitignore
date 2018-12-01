@@ -4,7 +4,7 @@
 # Data folders
 MPII/Data/*
 Stanford/Data/*
-UTD-MHAD/Data/*
+UTDMHAD/Data/*
 
 # Python
 __pycache__/
