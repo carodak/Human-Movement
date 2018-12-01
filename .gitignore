@@ -10,6 +10,9 @@ __pycache__/
 # CMake
 cmake-build-*/
 
+# MacOSX
+.DS_Store
+
 # Latex generated files
 *.fls
 *.aux
