@@ -23,16 +23,17 @@ def main():
 
     #Change the list to an array
     X = np.array([x.tolist() for x in dataset])
-    #print(X)#
+    X = X[:,:,:-1]
+    print(X.shape)
 
     n = X.shape[0]
 
-    X = np.reshape(X, (n, 54))
+    X = np.reshape(X, (n, 36))
 
     X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.2, random_state=42)
 
 
-    clf = AdaBoostClassifier(n_estimators=10000,learning_rate=0.001)
+    clf = AdaBoostClassifier(n_estimators=500,learning_rate=0.1)
     clf.fit(X_train,y_train)
 
     print(clf.score(X_test, y_test))
