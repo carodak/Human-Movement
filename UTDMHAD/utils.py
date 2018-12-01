@@ -28,7 +28,7 @@ def load_utdmhad_cov_matrix_examples(
     raw_dataset = raw_dataset.T
     num_examples = raw_dataset.shape[0]
 
-    random.shuffle(raw_dataset)
+    random.Random(4).shuffle(raw_dataset)
 
     num_train = int(num_examples * training_set_size)
     num_valid = int(num_examples * training_validation_set_size)
