@@ -6,8 +6,6 @@ from sklearn.ensemble import AdaBoostClassifier
 from os.path import dirname, abspath
 import utils
 
-#parent_dir = dirname(abspath(__file__))
-
 # An AdaBoost classifier for the UTD-MHAD dataset
 
 def main():
@@ -15,7 +13,7 @@ def main():
     data = utils.load_utdmhad_cov_matrix_examples(0.8,0,0.2)
     train_set_X, train_set_y, valid_set_X, valid_set_y, test_set_X, test_set_y = data
 
-    clf = AdaBoostClassifier(n_estimators=1000,learning_rate=0.001)
+    clf = AdaBoostClassifier(n_estimators=160,learning_rate=0.1)
 
     clf.fit(train_set_X,train_set_y)
     print(clf.score(test_set_X, test_set_y))

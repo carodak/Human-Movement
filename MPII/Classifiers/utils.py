@@ -1,14 +1,14 @@
 import pickle
 import numpy as np
-from os.path import dirname, abspath
+import os
 import random
-parent_dir = dirname(dirname(abspath(__file__)))
-parent_parent_dir = dirname(parent_dir)
 
-def load_MPII_data_categories_not_for_cnn(
+def load_MPII_data_not_for_cnn(
     training_set_size,
     training_validation_set_size,
-    testing_set_size
+    testing_set_size,
+    act_cat,
+    use_dist
 ):
 
     """
@@ -26,26 +26,37 @@ def load_MPII_data_categories_not_for_cnn(
     assert (0 <= training_set_size + training_validation_set_size + testing_set_size <= 1)
 
     # Load the data
-    MPII_dataset = pickle.load(open(parent_dir+ "/Data/MPII_dataset.p", "rb"))
-    MPII_dataset_label_categories = pickle.load(open(parent_dir + "/Data/MPII_dataset_label_categories.p", "rb"))
+    path = os.path.join('..','Data')
+    with open(os.path.join(path, 'MPII_dataset.p'),'rb') as f:
+        dataset = pickle.load(f)
+    with open(os.path.join(path, 'MPII_dataset_activities.p'),'rb') as f:
+        activities = pickle.load(f)
+    with open(os.path.join(path, 'MPII_dataset_images_names.p'),'rb') as f:
+        images_names = pickle.load(f)
+    with open(os.path.join(path, 'MPII_dataset_label_categories.p'),'rb') as f:
+        categories = pickle.load(f)
+    with open(os.path.join(path, 'MPII_dataset_label.p'),'rb') as f:
+        label = pickle.load(f)
+    with open(os.path.join(path, 'MPII_dataset_euclidean_distance.p'),'rb') as f:
+        distance = pickle.load(f)
 
-    # [ [x,y] [x,y] .. ]
+    if act_cat == "cat":
+        Y = categories
+    else:
+        Y = activities
 
-    # Get the number of images
-    num_examples = len(MPII_dataset)
+    if use_dist:
+        num_examples = distance.shape[0]
+        X = np.reshape(distance, (num_examples, 16*16))
+    else:
+        num_examples = len(dataset)
+        X = np.reshape(dataset, (num_examples, 32))
 
-    #We need the x_data under the form [[32joins of image1], [32joins of image2], []...]
-    X = np.reshape(MPII_dataset, (num_examples, 32))
-    
-    data = np.zeros((X.shape[0],X.shape[1],1))
+    raw_dataset = np.array([np.append(X[i],Y[i])  for i in range(num_examples)])
 
-    for i in range(num_examples):
-        data[i] = []
-    
-    
-    print("data: ", data)
+#print(raw_dataset[0])
 
-    random.shuffle(MPII_dataset)
+    random.Random(4).shuffle(raw_dataset)
 
     num_train = int(num_examples * training_set_size)
     num_valid = int(num_examples * training_validation_set_size)
@@ -53,11 +64,16 @@ def load_MPII_data_categories_not_for_cnn(
 
     bounds = [num_train - 1, num_train + num_valid - 1, num_train + num_valid + num_test]
 
-    training_set = raw_dataset[:bounds[0], 1:]
-    training_validation_set = raw_dataset[bounds[0]:bounds[1], 1:]
-    testing_set = raw_dataset[bounds[1]:bounds[2], 1:]
+    training_set = raw_dataset[:bounds[0], :-1]
+    training_validation_set = raw_dataset[bounds[0]:bounds[1], :-1]
+    testing_set = raw_dataset[bounds[1]:bounds[2], :-1]
 
-    training_set_labels = raw_dataset[:bounds[0], 0]
-    training_validation_labels = raw_dataset[bounds[0]:bounds[1], 0]
-    testing_set_labels = raw_dataset[bounds[1]:bounds[2], 0]
+    training_set_labels = raw_dataset[:bounds[0], -1]
+    training_validation_labels = raw_dataset[bounds[0]:bounds[1], -1]
+    testing_set_labels = raw_dataset[bounds[1]:bounds[2], -1]
 
+#print(testing_set_labels)
+
+    return training_set, training_set_labels,\
+        training_validation_set, training_validation_labels,\
+            testing_set, testing_set_labels
