@@ -63,11 +63,11 @@ def custom_grid_search(
     # }
 
     params = {
-        'n_estimators': range(100, 200, 50),
-        'max_depths': range(5, 20, 1),
+        'n_estimators': [200],
+        'max_depths': range(5, 15, 1),
         # 30-50% of the data set
         'max_features': [int(0.01 * i * num_examples) for i in range(30, 50, 5)],
-        'min_samples_leafs': range(1, 10)
+        'min_samples_leafs': range(1, 8)
     }
 
     average_runs_count = 5
