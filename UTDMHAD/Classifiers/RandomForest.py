@@ -106,7 +106,6 @@ def custom_grid_search(
                     file_results.write(','.join(str(x) for x in [train_accuracy, test_accuracy, n_estimator, max_depth, max_feature, min_samples_leaf]))
                     file_results.write('\n')
                     iteration += 1
-                    file_results.close()
 
     file_results.close()
 
