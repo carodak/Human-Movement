@@ -107,7 +107,6 @@ def custom_grid_search(
                     file_results.write('\n')
                     iteration += 1
                     file_results.close()
-                    return
 
     file_results.close()
 
