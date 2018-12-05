@@ -1,20 +1,15 @@
 import numpy as np  # linear algebra
-import matplotlib.pyplot as plt
-from sklearn.ensemble import RandomForestClassifier
 import os
-import sys
 
 from time import time
 from scipy.stats import randint as sp_randint
+from datetime import datetime
 
-from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RandomizedSearchCV
-from sklearn.datasets import load_digits
 from sklearn.ensemble import RandomForestClassifier
 
 import UTDMHAD.Classifiers.utils as utils
 import shared_utils
-import random
 from functools import reduce
 
 
@@ -78,15 +73,14 @@ def custom_grid_search(
     average_runs_count = 5
     iteration = 1
     total_iterations = reduce(lambda x, y: x*y, [len(lst) for lst in params.values()])
-    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Results", "RandomForestHyperParameters.csv")
+    file_name = "RandomForestHyperParameters_" + str(int((datetime.utcnow()-datetime(1970,1,1)).total_seconds())) + ".csv"
+    file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Results", file_name)
     file_results = open(file_path, "w+")
     file_results.write(','.join(["train_accuracy", "test_accuracy", "n_estimator", "max_depth", "max_feature", "min_samples_leaf", "\n"]))
-    file_results.close()
     for n_estimator in params['n_estimators']:
         for max_depth in params['max_depths']:
             for max_feature in params['max_features']:
                 for min_samples_leaf in params['min_samples_leafs']:
-                    file_results = open(file_path, "w+")
                     print("Iteration {}/{}".format(iteration, total_iterations))
 
                     train_accuracy = 0
@@ -112,8 +106,10 @@ def custom_grid_search(
                     file_results.write(','.join(str(x) for x in [train_accuracy, test_accuracy, n_estimator, max_depth, max_feature, min_samples_leaf]))
                     file_results.write('\n')
                     iteration += 1
-
                     file_results.close()
+                    return
+
+    file_results.close()
 
 
 def randomised_search(
