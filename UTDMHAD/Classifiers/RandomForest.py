@@ -28,34 +28,11 @@ def main():
         testing_set_size
     )
     num_dimensions = train_set_X.shape[1]
+    model = RandomForestClassifier(n_estimators=100)
 
-    # https://stackoverflow.com/questions/20463281/how-do-i-solve-overfitting-in-random-forest-of-python-sklearn
-    # specify parameters and distributions to sample from
-    # param_dist = {
-    #     "max_depth": [3, None],
-    #     "max_features": sp_randint(int(num_dimensions*0.3), int(num_dimensions*0.5)),
-    #     "min_samples_split": sp_randint(2, 11),
-    #     "min_samples_leaf": sp_randint(2, 10),
-    #     "bootstrap": [True, False],
-    #     "criterion": ["gini", "entropy"]
-    # }
-    #
-    # # run randomized search
-    # num_iterations = 1
-    # model = RandomForestClassifier(n_estimators=100)
-    # random_search = RandomizedSearchCV(model, param_distributions=param_dist,
-    #                                    n_iter=num_iterations, cv=5)
-    #
-    # start = time()
-    # random_search.fit(train_set_X, train_set_y)
-    # print("RandomizedSearchCV took %.2f seconds for %d candidates"
-    #       " parameter settings." % ((time() - start), num_iterations))
-    # shared_utils.report(random_search.cv_results_)
-
-
-
-
-
+    basic_unoptimised_run_example()
+    # random_search(model, num_dimensions)
+    # custom_search(model, num_dimensions)
 
     model = RandomForestClassifier(n_estimators=100, bootstrap=True, criterion='entropy', max_depth=7, max_features=720, min_samples_leaf=3)
     model.fit(train_set_X, train_set_y)
@@ -63,66 +40,89 @@ def main():
     print(model.score(test_set_X, test_set_y))
 
 
+def basic_unoptimised_run_example():
+    # Try different max_depth (tree max depth) to improve results
+    model = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=0)
+    model.fit(train_set_X, train_set_y)
+    acc = model.score(test_set_X, test_set_y)
+
+    print("Accuracy on the training set: %s \n" % acc)
+    print("clf.feature_importances: %s \n " % model.feature_importances_)
 
 
+def custom_search(
+    model,
+    num_dimensions
+):
+    params_dict = {
+        "max_depth": [random.choice([3, None]) for i in range(num_iterations)],
+        "max_features": [random.randint(1, train_set_X.shape[1]) for i in range(num_iterations)],
+        "min_samples_split": [random.randint(2, 10) for i in range(num_iterations)],
+        "min_samples_leaf": [random.randint(2, 10) for i in range(num_iterations)],
+        "bootstrap": [random.choice([True, False]) for i in range(num_iterations)],
+        "criterion": [random.choice(["gini", "entropy"]) for i in range(num_iterations)]
+    }
+
+    best_valid_accuracy = 0.0
+    for i in range(num_iterations):
+        model = RandomForestClassifier(
+            n_estimators=100,
+            max_depth=params_dict["max_depth"][i],
+            max_features=params_dict["max_features"][i],
+            min_samples_split=params_dict["min_samples_split"][i],
+            min_samples_leaf=params_dict["min_samples_leaf"][i],
+            bootstrap=params_dict["bootstrap"][i],
+            criterion=params_dict["criterion"][i]
+        )
+
+        print("Iteration {}/{}".format(i, num_iterations))
+
+        model.fit(train_set_X, train_set_y)
+        valid_accuracy = model.score(valid_set_X, valid_set_y)
+        test_accuracy = model.score(test_set_X, test_set_y)
+
+        if valid_accuracy > best_valid_accuracy:
+            best_valid_accuracy = valid_accuracy
+            print("Test accuracy: {}. Validation accuracy: {} Hyper-parameters: {}".format(best_valid_accuracy, test_accuracy, model.get_params()))
+
+    return
 
 
+def randomised_search(
+    model,
+    num_dimensions
+):
+    # https://stackoverflow.com/questions/20463281/how-do-i-solve-overfitting-in-random-forest-of-python-sklearn
+    # specify parameters and distributions to sample from
+    param_dist = {
+        "max_depth": [3, None],
+        "max_features": sp_randint(int(num_dimensions*0.3), int(num_dimensions*0.5)),
+        "min_samples_split": sp_randint(2, 11),
+        "min_samples_leaf": sp_randint(2, 10),
+        "bootstrap": [True, False],
+        "criterion": ["gini", "entropy"]
+    }
+
+    # run randomized search
+    num_iterations = 1
+    random_search = RandomizedSearchCV(model, param_distributions=param_dist, n_iter=num_iterations, cv=5)
+
+    start = time()
+    random_search.fit(train_set_X, train_set_y)
+    print("RandomizedSearchCV took %.2f seconds for %d candidates"
+          " parameter settings." % ((time() - start), num_iterations))
+    shared_utils.report(random_search.cv_results_)
 
 
+def predict_and_save_results(
+    model
+):
+    results = model.predict(test_set_X)
 
+    results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Results", "RandomForest_predictions.csv")
+    np.savetxt(results_path, results, delimiter=',', fmt='%s')
 
-
-
-
-
-
-    # params_dict = {
-    #     "max_depth": [random.choice([3, None]) for i in range(num_iterations)],
-    #     "max_features": [random.randint(1, train_set_X.shape[1]) for i in range(num_iterations)],
-    #     "min_samples_split": [random.randint(2, 10) for i in range(num_iterations)],
-    #     "min_samples_leaf": [random.randint(2, 10) for i in range(num_iterations)],
-    #     "bootstrap": [random.choice([True, False]) for i in range(num_iterations)],
-    #     "criterion": [random.choice(["gini", "entropy"]) for i in range(num_iterations)]
-    # }
-    #
-    # best_valid_accuracy = 0.0
-    # for i in range(num_iterations):
-    #     model = RandomForestClassifier(
-    #         n_estimators=100,
-    #         max_depth=params_dict["max_depth"][i],
-    #         max_features=params_dict["max_features"][i],
-    #         min_samples_split=params_dict["min_samples_split"][i],
-    #         min_samples_leaf=params_dict["min_samples_leaf"][i],
-    #         bootstrap=params_dict["bootstrap"][i],
-    #         criterion=params_dict["criterion"][i]
-    #     )
-    #
-    #     print("Iteration {}/{}".format(i, num_iterations))
-    #
-    #     model.fit(train_set_X, train_set_y)
-    #     valid_accuracy = model.score(valid_set_X, valid_set_y)
-    #     test_accuracy = model.score(test_set_X, test_set_y)
-    #
-    #     if valid_accuracy > best_valid_accuracy:
-    #         best_valid_accuracy = valid_accuracy
-    #         print("Test accuracy: {}. Validation accuracy: {} Hyper-parameters: {}".format(best_valid_accuracy, test_accuracy, model.get_params()))
-    #
-    # return
-    #
-    # # Try different max_depth (tree max depth) to improve results
-    # model = RandomForestClassifier(n_estimators=100, max_depth=10, random_state=0)
-    # model.fit(train_set_X, train_set_y)
-    # acc = model.score(test_set_X, test_set_y)
-    # print("Accuracy on the training set: %s \n" % acc)
-    #
-    # print("clf.feature_importances: %s \n " % model.feature_importances_)
-    #
-    # results = model.predict(test_set_X)
-    #
-    # results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Results", "RandomForest_predictions.csv")
-    # np.savetxt(results_path, results, delimiter=',', fmt='%s')
-    #
-    # print("Predictions have been saved as a csv file")
+    print("Predictions have been saved as a csv file")
 
 
 if __name__ == '__main__':
