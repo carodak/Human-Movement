@@ -23,13 +23,12 @@ def load_utdmhad_cov_matrix_examples(
     assert(0 <= testing_set_size <= 1)
     assert(0 <= training_set_size + training_validation_set_size + testing_set_size <= 1)
 
-    data_path = os
     data_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Data", "UTD_MHAD_Labeled_Descriptors.csv")
     raw_dataset = np.loadtxt(data_path, delimiter=",", skiprows=0)
     raw_dataset = raw_dataset.T
     num_examples = raw_dataset.shape[0]
 
-    random.Random(4).shuffle(raw_dataset)
+    random.shuffle(raw_dataset)
 
     num_train = int(num_examples * training_set_size)
     num_valid = int(num_examples * training_validation_set_size)

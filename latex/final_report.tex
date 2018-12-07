@@ -46,16 +46,13 @@ Montreal, Quebec
 \maketitle
 
 \begin{abstract}
-    We explore different approaches to the problem of recognizing data poses. We try three
-    classical algorithms, k-NN, Random Forest and Adaboost. We test the methods on
-    datasets that pose different challenges, so we can evaluate the strenghts and
-    limitations of each algorithm.  We try to see if we can
-    reproduce state of the art results and identify shortcomings and new directions to
-    explore.
+We explore different approaches to the problem of recognizing activities through human poses. We try three classical algorithms, k-NN, Random Forest and Adaboost. We test the methods on datasets that pose different challenges, so we can evaluate the strenghts and limitations of each algorithm.  We try to see if we can reproduce state of the art results and identify shortcomings and new directions to explore.
 \end{abstract}
 
 \section{Introduction}
+Human pose estimation has been a core problem of computer vision for the past decades.
 The goal of this project was to characterise how much the body position of one person could be correlated to the activity he or she was doing. Spatial points associated with body markers such as an ankle, knee, elbow, head and so on were used to complete this task. Three datasets were gathered, which allowed us to investigate the problem from different perspectives.
+1P
 
 The first dataset is the MPII Human Pose Annotations Dataset. In this dataset, there is a total of 30,000 annotated picture examples (body-pose) labeled in 420 classes, each corresponding to a given activity.
 
@@ -67,8 +64,11 @@ The three classifiers decided to look into were: K-NN, Random Forest and AdaBoos
 
 \section{Data}
 \subsection{UTD-MHAD}
+The Multimodal Human Action Dataset contains 27 actions performed by 8 different people. Each action is represented by a video (.avi) and the depth, skeleton and inertial sensor data associated with each frames are available in matlab data files (.mat).
 \subsection{MPII Human Pose}
+The MPII Human Pose dataset is comprised of 25k images of people doing every day activities. Each image contains one person or more, for a total of around 40k people displayed across the dataset. There are 410 different activities that are split into 20 broader categories. It is possible to learn either task (categories or activities), one being much more difficult than the other. For each image, there is an associated annotation file that gives the position of each main human joint on the corresponding image.
 \subsection{Stanford 40 Actions}
+The Stanford 40 Actions dataset contains 9532 images of humans performing 40 different actions. There are between 180 and 300 images per action. Each image has a file associated that gives the coordinates of the bouding box, identifying the humans in each picture. This set does not contains any joint annotations.
 
 \section{Pre-processing}
 \subsection{UTD-MHAD}
