@@ -1,6 +1,7 @@
 import pickle
 import numpy as np
-import os
+from os.path import dirname, abspath
+parent_dir = dirname(dirname(abspath(__file__)))
 import random
 
 def load_MPII_data_not_for_cnn(
@@ -26,31 +27,51 @@ def load_MPII_data_not_for_cnn(
     assert (0 <= training_set_size + training_validation_set_size + testing_set_size <= 1)
 
     # Load the data
-    path = os.path.join('..','Data')
-    with open(os.path.join(path, 'MPII_dataset.p'),'rb') as f:
+    with open( parent_dir+"/Data/MPII_dataset.p", "rb" ) as f:
         dataset = pickle.load(f)
-    with open(os.path.join(path, 'MPII_dataset_activities.p'),'rb') as f:
+    with open( parent_dir+"/Data/MPII_dataset_activities.p", "rb" ) as f:
         activities = pickle.load(f)
-    with open(os.path.join(path, 'MPII_dataset_images_names.p'),'rb') as f:
+    with open( parent_dir+"/Data/MPII_dataset_images_names.p", "rb" ) as f:
         images_names = pickle.load(f)
-    with open(os.path.join(path, 'MPII_dataset_label_categories.p'),'rb') as f:
+    with open( parent_dir+"/Data/MPII_dataset_label_categories.p", "rb" ) as f:
         categories = pickle.load(f)
-    with open(os.path.join(path, 'MPII_dataset_label.p'),'rb') as f:
+    with open( parent_dir+"/Data/MPII_dataset_label.p", "rb" ) as f:
         label = pickle.load(f)
-    with open(os.path.join(path, 'MPII_dataset_euclidean_distance.p'),'rb') as f:
-        distance = pickle.load(f)
+    with open( parent_dir+"/Data/MPII_dataset_euclidean_distance.p", "rb" ) as f:
+        distance_euc = pickle.load(f)
+    with open( parent_dir+"/Data/MPII_dataset_minkowski_p1.p", "rb" ) as f:
+        distance_min_p1 = pickle.load(f)
+    with open( parent_dir+"/Data/MPII_dataset_minkowski_p3.p", "rb" ) as f:
+        distance_min_p3 = pickle.load(f)
+    with open( parent_dir+"/Data/MPII_dataset_cosine.p", "rb" ) as f:
+        distance_cos = pickle.load(f)
+    
+
 
     if act_cat == "cat":
         Y = categories
     else:
         Y = activities
 
-    if use_dist:
-        num_examples = distance.shape[0]
-        X = np.reshape(distance, (num_examples, 16*16))
-    else:
+    if use_dist == 0:
         num_examples = len(dataset)
         X = np.reshape(dataset, (num_examples, 32))
+
+    if use_dist == 1:
+        num_examples = distance_euc.shape[0]
+        X = np.reshape(distance_euc, (num_examples, 16*16))
+
+    if use_dist == 2:
+        num_examples = distance_min_p1.shape[0]
+        X = np.reshape(distance_min_p1, (num_examples, 16*16))
+
+    if use_dist == 3:
+        num_examples = distance_min_p3.shape[0]
+        X = np.reshape(distance_min_p3, (num_examples, 16*16))
+
+    if use_dist == 4:
+        num_examples = distance_cos.shape[0]
+        X = np.reshape(distance_cos, (num_examples, 16*16))
 
     raw_dataset = np.array([np.append(X[i],Y[i])  for i in range(num_examples)])
 
