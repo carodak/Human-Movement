@@ -16,8 +16,8 @@ def main():
         'n_estimators': [200],
         # [5, 6, ..., 12]
         'max_depths': range(5, 13, 1),
-        # [10, 20, ..., 100]
-        'max_features': [int(0.01 * i * num_features) for i in range(10, 101, 10)],
+        # [5, 10, ..., 50]
+        'max_features': [int(0.01 * i * num_features) for i in range(5, 51, 5)],
         # [1, ..., 4]
         'min_samples_leafs': range(1, 5)
     }
