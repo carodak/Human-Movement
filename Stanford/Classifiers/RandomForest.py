@@ -18,8 +18,7 @@ def main():
         'max_depths': range(5, 13, 1),
         # [5, 10, ..., 50]
         'max_features': [int(0.01 * i * num_features) for i in range(5, 51, 5)],
-        # [1, ..., 4]
-        'min_samples_leafs': range(1, 5)
+        'min_samples_leafs': [1, 2, 3]
     }
 
     file_name = "RandomForestHyperParameters_" + str(int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds())) + ".csv"
