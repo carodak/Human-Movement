@@ -13,7 +13,7 @@ def main():
     data = utils.load_utdmhad_cov_matrix_examples(0.8,0,0.2)
     train_set_X, train_set_y, valid_set_X, valid_set_y, test_set_X, test_set_y = data
 
-    clf = AdaBoostClassifier(n_estimators=160,learning_rate=0.1)
+    clf = AdaBoostClassifier(n_estimators=150,learning_rate=0.1)
 
     clf.fit(train_set_X,train_set_y)
     print(clf.score(test_set_X, test_set_y))

@@ -2,6 +2,8 @@ import pickle
 import numpy as np
 import os
 import random
+from os.path import dirname, abspath
+parent_dir = dirname(dirname(abspath(__file__)))
 
 
 def load_stanford_data_not_for_cnn(
@@ -24,9 +26,9 @@ def load_stanford_data_not_for_cnn(
     
     # Load the data
     path = os.path.join('..', 'Data')
-    with open(os.path.join(path, 'stanford_joints_pose.p'), 'rb') as f:
+    with open( parent_dir+"/Data/stanford_joints_pose.p", "rb" ) as f:
         dataset = pickle.load(f)
-    with open(os.path.join(path, 'stanford_labels.p'), 'rb') as f:
+    with open( parent_dir+"/Data/stanford_labels.p", "rb" ) as f:
         label = pickle.load(f)
 
     dataset = np.array([x.tolist() for x in dataset])
