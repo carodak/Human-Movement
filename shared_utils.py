@@ -13,10 +13,11 @@ from sklearn.ensemble import RandomForestClassifier
 def random_forest_custom_grid_search(
     params,
     results_file_path,
+    average_runs_count,
     train_set_x,
     train_set_y,
     test_set_x,
-    test_set_y
+    test_set_y,
 ):
     """
     Do a grid search to find the best hyper-parameters for a RandomForest algorithm on the data sets provided
@@ -24,12 +25,12 @@ def random_forest_custom_grid_search(
     :param params: A dictionary of the sklearn.RandomForestClassifier parameters
         n_estimators, max_depths, max_features and min_samples_leafs to test
     :param results_file_path: The absolute path to the file the results from the grid search will be stored
+    :param average_runs_count: How many times should each combination be tried?
     :param train_set_x: The inputs for the training set
     :param train_set_y: The corresponding outputs (labels) for the training set
     :param test_set_x: The inputs for the test set
     :param test_set_y: The corresponding outputs (labels) for the test set
     """
-    average_runs_count = 1
     iteration = 1
     total_iterations = reduce(lambda x, y: x*y, [len(lst) for lst in params.values()])
     file_results = open(results_file_path+".csv", "w+")

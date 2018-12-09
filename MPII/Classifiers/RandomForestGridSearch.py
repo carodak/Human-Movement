@@ -15,6 +15,11 @@ def main():
         print("Only the choices act or cat are supported")
         sys.exit(1)
 
+    average_runs_count = 5
+    if choice == 'act':
+        # Activities are much more computationally slow
+        average_runs_count = 1
+
     data = utils.load_MPII_data_not_for_cnn(0.8, 0, 0.2, choice, 0)
     train_set_x, train_set_y, valid_set_x, valid_set_y, test_set_x, test_set_y = data
 
@@ -32,7 +37,7 @@ def main():
     file_name = '_'.join(["RandomForestHyperParameters", choice, str(int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds()))])
     results_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Results", file_name)
 
-    shared_utils.random_forest_custom_grid_search(params, results_file_path, train_set_x, train_set_y, test_set_x, test_set_y)
+    shared_utils.random_forest_custom_grid_search(params, results_file_path, average_runs_count, train_set_x, train_set_y, test_set_x, test_set_y)
     shared_utils.save_plots_for_random_forest_grid_search_results(results_file_path)
 
 
