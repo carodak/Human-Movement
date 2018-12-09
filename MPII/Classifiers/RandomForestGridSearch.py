@@ -33,7 +33,7 @@ def main():
     results_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Results", file_name)
 
     shared_utils.random_forest_custom_grid_search(params, results_file_path, train_set_x, train_set_y, test_set_x, test_set_y)
-    #shared_utils.save_plots_for_random_forest_grid_search_results(results_file_path)
+    shared_utils.save_plots_for_random_forest_grid_search_results(results_file_path)
 
 
 if __name__ == '__main__':
