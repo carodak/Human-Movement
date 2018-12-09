@@ -1,4 +1,4 @@
-overfitting,train_accuracy,test_accuracy,n_estimators,max_depth,max_features,min_samples_leaf,
+overfitting,train_accuracy,test_accuracy,n_estimators,max_depth,max_features,min_samples_leaf
 0.10858348474299978,0.37390263367917,0.2653191489361702,200,5,1,1
 0.10996572764372597,0.3711359404096834,0.2611702127659574,200,5,1,2
 0.10922104679266204,0.37113594040968334,0.2619148936170213,200,5,1,3

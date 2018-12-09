@@ -1,9 +1,7 @@
 from functools import reduce
 import random
 
-# This import registers the 3D projection for pyplot, but is otherwise unused.
 from mpl_toolkits.mplot3d import Axes3D
-
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import numpy as np
@@ -99,7 +97,7 @@ def save_plots_for_random_forest_grid_search_results(
     hyper_params_results = np.genfromtxt(csv_file_name+'.csv', dtype=float, delimiter=',', names=True)
 
     # [x, y, z] coordinate indexes taken from hyper_params_results for the 3D graphs
-    combinations = [[5, 4, 0], [6, 4, 0], [6, 5, 0]]
+    combinations = [[5, 4, 2], [6, 4, 2], [6, 5, 2]]
 
     for combination in combinations:
         labels = np.array([hyper_params_results.dtype.names[combination[i]] for i in range(0, len(combinations))])
@@ -109,12 +107,10 @@ def save_plots_for_random_forest_grid_search_results(
         for j in range(0, len(combinations)):
             coords[j] = np.array([hyper_params_results[i][combination[j]] for i in range(0, len(hyper_params_results))])
 
-        X, Y = np.meshgrid(coords[0], coords[1])
-        Z = np.tile(coords[2], (len(coords[2]), 1))
-
         fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
+        ax = Axes3D(fig)
         ax.update({'xlabel': labels[0], 'ylabel': labels[1], 'zlabel': labels[2]})
-        ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+        surf = ax.plot_trisurf(coords[0], coords[1], coords[2], cmap=cm.jet, linewidth=0.1)
+        fig.colorbar(surf, shrink=0.5, aspect=5)
 
         plt.savefig(csv_file_name+'-'.join(labels)+'.png', dpi=100)
