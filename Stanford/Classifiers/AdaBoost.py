@@ -9,7 +9,7 @@ def main():
 
     print("Classyfying")
 
-    clf = AdaBoostClassifier(n_estimators=1100,learning_rate=0.01)
+    clf = AdaBoostClassifier(n_estimators=3000,learning_rate=0.001)
     clf.fit(train_set_X,train_set_y)
 
     print(clf.score(test_set_X, test_set_y))

@@ -1,5 +1,9 @@
 import os
 from datetime import datetime
+import sys
+
+from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
 
 import UTDMHAD.Classifiers.utils as utils
 import shared_utils
@@ -17,22 +21,49 @@ def main():
         training_validation_set_size,
         testing_set_size
     )
-
     num_features = train_set_x.shape[1]
 
-    params = {
-        'n_estimators': [200],
-        # [5, 6, ..., 12]
-        'max_depths': range(5, 13, 1),
-        # [5, 10, ..., 50]
-        'max_features': [int(0.01 * i * num_features) for i in range(5, 51, 5)],
-        'min_samples_leafs': [1, 2, 3]
-    }
+    choice = input("Grid search or specific run? (grid/spec)")
+    choice = choice.lower()
 
-    file_name = "RandomForestHyperParameters_" + str(int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds())) + ".csv"
-    results_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Results", file_name)
+    if choice not in ['grid', 'spec']:
+        print("Only the choices grid or spec are supported")
+        sys.exit(1)
 
-    shared_utils.random_forest_custom_grid_search(params, results_file_path, train_set_x, train_set_y, test_set_x, test_set_y)
+    if choice == 'grid':
+        params = {
+            'n_estimators': [200],
+            # [5, 6, ..., 12]
+            'max_depths': range(5, 13, 1),
+            # [5, 10, ..., 50]
+            'max_features': [int(0.01 * i * num_features) for i in range(5, 51, 5)],
+            'min_samples_leafs': [1, 2, 3]
+        }
+
+        file_name = "RandomForestHyperParameters_" + str(int((datetime.utcnow() - datetime(1970, 1, 1)).total_seconds()))
+        results_file_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Results", file_name)
+
+        shared_utils.random_forest_custom_grid_search(params, results_file_path, 5, train_set_x, train_set_y, test_set_x, test_set_y)
+        shared_utils.save_plots_for_random_forest_grid_search_results(results_file_path)
+
+    else:
+        model = RandomForestClassifier(
+            n_estimators=200,
+            max_depth=12,
+            max_features=137,
+            min_samples_leaf=1,
+            bootstrap=True,
+            criterion='entropy'
+        )
+
+        model.fit(train_set_x, train_set_y)
+        print("Training accuracy: {}".format(model.score(train_set_x, train_set_y)))
+        print("Test accuracy: {}".format(model.score(test_set_x, test_set_y)))
+
+        conf_matrix = shared_utils.confusion_matrix(test_set_y, model.predict(test_set_x))
+        # Confusion matrix as a heatmap:
+        plt.imshow(conf_matrix, cmap='hot', interpolation='nearest')
+        plt.show()
 
 
 if __name__ == '__main__':
