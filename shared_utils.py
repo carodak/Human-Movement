@@ -114,3 +114,23 @@ def save_plots_for_random_forest_grid_search_results(
         fig.colorbar(surf, shrink=0.5, aspect=5)
 
         plt.savefig(csv_file_name+'-'.join(labels)+'.png', dpi=100)
+
+
+def confusion_matrix(
+    true_labels,
+    predicted_labels
+):
+    """
+    Constructs a confusion matrix based on the true and predicted labels given
+
+    :param true_labels:
+    :param predicted_labels:
+    :return:
+    """
+    n_classes = int(max(true_labels + 1))
+    matrix = np.zeros((n_classes, n_classes))
+
+    for (test, pred) in zip(true_labels, predicted_labels):
+        matrix[int(test), int(pred)] += 1
+
+    return matrix
