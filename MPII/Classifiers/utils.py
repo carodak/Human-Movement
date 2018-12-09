@@ -1,8 +1,9 @@
 import pickle
 import numpy as np
+import random
 from os.path import dirname, abspath
 parent_dir = dirname(dirname(abspath(__file__)))
-import random
+
 
 def load_MPII_data_not_for_cnn(
     training_set_size,
@@ -11,14 +12,14 @@ def load_MPII_data_not_for_cnn(
     act_cat,
     use_dist
 ):
-
     """
-        :param training_set_size: The % of the dataset we want as the training set [0,1]
-        :param training_validation_set_size: The % of the dataset we want as the training validation set [0,1]
-        :param testing_set_size: The % of the dataset we want as the testing set [0,1]
-        :return: training_set, training_set_labels,
-                 training_validation_set, training_validation_labels,
-                 testing_set, testing_set_labels
+    :param training_set_size: The % of the dataset we want as the training set [0,1]
+    :param training_validation_set_size: The % of the dataset we want as the training validation set [0,1]
+    :param testing_set_size: The % of the dataset we want as the testing set [0,1]
+    :param act_cat: 'act' if we want to work with activities labels, 'cat' if we want to work with categories labels
+    :return: training_set, training_set_labels,
+             training_validation_set, training_validation_labels,
+             testing_set, testing_set_labels
     """
 
     assert (0 <= training_set_size <= 1)
@@ -27,26 +28,20 @@ def load_MPII_data_not_for_cnn(
     assert (0 <= training_set_size + training_validation_set_size + testing_set_size <= 1)
 
     # Load the data
-    with open( parent_dir+"/Data/MPII_dataset.p", "rb" ) as f:
+    with open(parent_dir+"/Data/MPII_dataset.p", "rb") as f:
         dataset = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_activities.p", "rb" ) as f:
+    with open(parent_dir+"/Data/MPII_dataset_activities.p", "rb") as f:
         activities = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_images_names.p", "rb" ) as f:
-        images_names = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_label_categories.p", "rb" ) as f:
+    with open(parent_dir+"/Data/MPII_dataset_label_categories.p", "rb") as f:
         categories = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_label.p", "rb" ) as f:
-        label = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_euclidean_distance.p", "rb" ) as f:
+    with open(parent_dir+"/Data/MPII_dataset_euclidean_distance.p", "rb") as f:
         distance_euc = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_minkowski_p1.p", "rb" ) as f:
+    with open(parent_dir+"/Data/MPII_dataset_minkowski_p1.p", "rb") as f:
         distance_min_p1 = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_minkowski_p3.p", "rb" ) as f:
+    with open(parent_dir+"/Data/MPII_dataset_minkowski_p3.p", "rb") as f:
         distance_min_p3 = pickle.load(f)
-    with open( parent_dir+"/Data/MPII_dataset_cosine.p", "rb" ) as f:
+    with open(parent_dir+"/Data/MPII_dataset_cosine.p", "rb") as f:
         distance_cos = pickle.load(f)
-    
-
 
     if act_cat == "cat":
         Y = categories
@@ -73,11 +68,9 @@ def load_MPII_data_not_for_cnn(
         num_examples = distance_cos.shape[0]
         X = np.reshape(distance_cos, (num_examples, 16*16))
 
-    raw_dataset = np.array([np.append(X[i],Y[i])  for i in range(num_examples)])
+    raw_dataset = np.array([np.append(X[i], Y[i]) for i in range(num_examples)])
 
-#print(raw_dataset[0])
-
-    random.Random(4).shuffle(raw_dataset)
+    random.shuffle(raw_dataset)
 
     num_train = int(num_examples * training_set_size)
     num_valid = int(num_examples * training_validation_set_size)
@@ -92,8 +85,6 @@ def load_MPII_data_not_for_cnn(
     training_set_labels = raw_dataset[:bounds[0], -1]
     training_validation_labels = raw_dataset[bounds[0]:bounds[1], -1]
     testing_set_labels = raw_dataset[bounds[1]:bounds[2], -1]
-
-#print(testing_set_labels)
 
     return training_set, training_set_labels,\
         training_validation_set, training_validation_labels,\

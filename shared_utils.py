@@ -29,7 +29,7 @@ def random_forest_custom_grid_search(
     :param test_set_x: The inputs for the test set
     :param test_set_y: The corresponding outputs (labels) for the test set
     """
-    average_runs_count = 5
+    average_runs_count = 1
     iteration = 1
     total_iterations = reduce(lambda x, y: x*y, [len(lst) for lst in params.values()])
     file_results = open(results_file_path+".csv", "w+")
