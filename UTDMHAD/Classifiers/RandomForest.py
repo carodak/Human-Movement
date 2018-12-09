@@ -3,6 +3,7 @@ from datetime import datetime
 import sys
 
 from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
 
 import UTDMHAD.Classifiers.utils as utils
 import shared_utils
@@ -60,8 +61,9 @@ def main():
         print("Test accuracy: {}".format(model.score(test_set_x, test_set_y)))
 
         conf_matrix = shared_utils.confusion_matrix(test_set_y, model.predict(test_set_x))
-        print("Confusion matrix:")
-        print(conf_matrix)
+        # Confusion matrix as a heatmap:
+        plt.imshow(conf_matrix, cmap='hot', interpolation='nearest')
+        plt.show()
 
 
 if __name__ == '__main__':

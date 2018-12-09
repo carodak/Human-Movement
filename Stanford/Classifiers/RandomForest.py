@@ -1,7 +1,9 @@
 import os
 from datetime import datetime
 
+from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
+import matplotlib.pyplot as plt
 
 import Stanford.Classifiers.utils as utils
 import shared_utils
@@ -51,9 +53,19 @@ def main():
         print("Training accuracy: {}".format(model.score(train_set_x, train_set_y)))
         print("Test accuracy: {}".format(model.score(test_set_x, test_set_y)))
 
-        conf_matrix = shared_utils.confusion_matrix(test_set_y, model.predict(test_set_x))
-        print("Confusion matrix:")
-        print(conf_matrix)
+        # Confusion matrix:
+        labels = list(set(train_set_y))
+        cm = confusion_matrix(test_set_y, model.predict(test_set_x), labels)
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        cax = ax.matshow(cm)
+        plt.title('Confusion matrix of the classifier')
+        fig.colorbar(cax)
+        ax.set_xticklabels([''] + labels)
+        ax.set_yticklabels([''] + labels)
+        plt.xlabel('Predicted')
+        plt.ylabel('True')
+        plt.show()
 
 
 if __name__ == '__main__':
