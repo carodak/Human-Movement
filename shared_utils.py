@@ -63,7 +63,7 @@ def random_forest_custom_grid_search(
                     train_accuracy /= (1.0*average_runs_count)
                     test_accuracy /= (1.0*average_runs_count)
 
-                    file_results.write(','.join(str(x) for x in [train_accuracy-test_accuracy, train_accuracy, test_accuracy, n_estimator, max_depth, max_feature, min_samples_leaf]))
+                    file_results.write((','.join(str(x) for x in [train_accuracy-test_accuracy, train_accuracy, test_accuracy, n_estimator, max_depth, max_feature, min_samples_leaf]))[:-1])
                     file_results.write('\n')
                     iteration += 1
 
@@ -134,3 +134,14 @@ def confusion_matrix(
         matrix[int(test), int(pred)] += 1
 
     return matrix
+
+
+def grid_or_spec():
+    choice = input("Grid search or specific run? (grid/spec)")
+    choice = choice.lower()
+
+    if choice not in ['grid', 'spec']:
+        print("Only the choices grid or spec are supported")
+        sys.exit(1)
+
+    return choice
