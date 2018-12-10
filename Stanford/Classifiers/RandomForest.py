@@ -16,12 +16,7 @@ def main():
 
     num_features = train_set_x.shape[1]
 
-    choice = input("Grid search or specific run? (grid/spec)")
-    choice = choice.lower()
-
-    if choice not in ['grid', 'spec']:
-        print("Only the choices grid or spec are supported")
-        sys.exit(1)
+    choice = shared_utils.grid_or_spec()
 
     if choice == 'grid':
         params = {

@@ -15,11 +15,11 @@ from sklearn.tree import DecisionTreeClassifier
 def main():
     
     #Dataset would be the coordinates of each join
-    data = utils.load_MPII_data_not_for_cnn(0.8,0,0.2,"cat",1)
+    data = utils.load_MPII_data_not_for_cnn(0.8,0,0.2,"cat",4)
     train_set_X, train_set_y, valid_set_X, valid_set_y, test_set_X, test_set_y = data
     
     print("Classyfying...")
-    clf = AdaBoostClassifier(n_estimators=500,learning_rate=0.001)
+    clf = AdaBoostClassifier(DecisionTreeClassifier(max_depth=2),n_estimators=1000,learning_rate=0.001)
 
     clf.fit(train_set_X,train_set_y)
 

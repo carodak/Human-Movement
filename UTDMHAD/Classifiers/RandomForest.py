@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-import sys
 
 from sklearn.ensemble import RandomForestClassifier
 import matplotlib.pyplot as plt
@@ -23,12 +22,7 @@ def main():
     )
     num_features = train_set_x.shape[1]
 
-    choice = input("Grid search or specific run? (grid/spec)")
-    choice = choice.lower()
-
-    if choice not in ['grid', 'spec']:
-        print("Only the choices grid or spec are supported")
-        sys.exit(1)
+    choice = shared_utils.grid_or_spec()
 
     if choice == 'grid':
         params = {
@@ -46,7 +40,7 @@ def main():
         shared_utils.random_forest_custom_grid_search(params, results_file_path, 5, train_set_x, train_set_y, test_set_x, test_set_y)
         shared_utils.save_plots_for_random_forest_grid_search_results(results_file_path)
 
-    else:
+    elif choice == 'spec':
         model = RandomForestClassifier(
             n_estimators=200,
             max_depth=12,
