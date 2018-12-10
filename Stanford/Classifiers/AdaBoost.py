@@ -1,43 +1,22 @@
-# Load the pickle file.
-import pickle
 import numpy as np
-from sklearn.model_selection import cross_val_score
 from sklearn.ensemble import AdaBoostClassifier
-from os.path import dirname, abspath
-from sklearn.model_selection import train_test_split
-from sklearn import preprocessing, svm
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.svm import SVC
+import utils
 
-parent_dir = dirname(dirname(abspath(__file__)))
-parent_parent_dir = dirname(parent_dir)
+def main():
+    
+    data = utils.load_stanford_data_not_for_cnn(0.7,0,0.3)
+    train_set_X, train_set_y, valid_set_X, valid_set_y, test_set_X, test_set_y = data
 
-#Load the data
-dataset = pickle.load( open( parent_parent_dir+"/Stanford/Data/stanford_joints_pose.p", "rb" ) )
-labels = pickle.load( open( parent_parent_dir+"/Stanford/Data/stanford_labels.p", "rb" ) )
+    print("Classyfying")
 
-#print(dataset)
-#print(dataset.shape)
+    clf = AdaBoostClassifier(n_estimators=3000,learning_rate=0.001)
+    clf.fit(train_set_X,train_set_y)
 
-#Change the list to an array
-X = np.array([x.tolist() for x in dataset])
-#print(X)#
+    print(clf.score(test_set_X, test_set_y))
 
-n = X.shape[0]
 
-X = np.reshape(X, (n, 54))
-
-X_train, X_test, y_train, y_test = train_test_split(X, labels, test_size=0.33, random_state=42)
-
-#Follow this tutorialhttps://code-examples.net/fr/docs/scikit_learn/modules/cross_validation
-#scaler = preprocessing.StandardScaler().fit(X_train)
-#X_train_transformed = scaler.transform(X_train)
-clf = AdaBoostClassifier(n_estimators=10,learning_rate=1)
-#X_test_transformed = scaler.transform(X_test)
-clf.fit(X_train,y_train)
-print(clf.score(X_train, y_train))
-print(clf.score(X_test, y_test))
-
+if __name__ == '__main__':
+    main()
 
 
 
