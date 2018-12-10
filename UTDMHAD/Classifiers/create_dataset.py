@@ -213,6 +213,7 @@ test_predictions = rbf_svc.predict(test_descriptors)
 
 error = (1.0 - np.equal(test_predictions, test_labels)).mean() * 100.0
 
+conf_mat_knn = conf_matrix(test_labels, test_predictions)
 
 print(error)
 
